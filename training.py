@@ -3,7 +3,7 @@ from torch.utils.data import DataLoader, TensorDataset
 import torch.optim as optim
 import os
 
-from help_func import self_feeding, enc_self_feeding
+from help_func import self_feeding, enc_self_feeding, set_requires_grad
 from loss_func import custom_loss, loss_encoder_decoder, loss_3, loss_4, loss_5, loss_6, total_loss_forced, loss_3_uf, loss_4_uf, loss_5_uf, loss_6_uf, total_loss_unforced
 from nn_structure import AUTOENCODER
 
