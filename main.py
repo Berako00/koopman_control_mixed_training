@@ -60,7 +60,7 @@ lr = 1e-3        # Learning rate
 batch_size = 256
 S_p = 30
 T = len(train_tensor[0, :, :])
-alpha = [0.1, 0.002, 0.0005, 0.03]
+alpha = [0.1, 10e-7, 10e-15] 
 W = 0
 M = 1 # Amount of models you want to run
 
