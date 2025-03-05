@@ -29,11 +29,12 @@ mu = -0.05
 lam = -1
 seed = 1
 
-[train_tensor, test_tensor, val_tensor] = DataGenerator(x1range, x2range, numICs, mu, lam, T_step, dt)
+[train_tensor_unforced, train_tensor_forced, test_tensor, val_tensor] = DataGenerator(x1range, x2range, numICs, mu, lam, T_step, dt)
 
-print(f"Train tensor shape: {train_tensor.shape}")
-print(f"Test tensor shape: {test_tensor.shape}")
-print(f"Validation tensor shape: {val_tensor.shape}")
+print(f"Train tensor for unforced system shape: {train_tensor_unforced.shape}")       # Expected: [10000, 101, 3]
+print(f"Train tensor with force shape: {train_tensor_forced.shape}")       # Expected: [10000, 101, 3]
+print(f"Test tensor shape: {test_tensor.shape}")          # Expected: [5000, 101, 3]
+print(f"Validation tensor shape: {val_tensor.shape}")     # Expected: [5000, 101, 3]
 
 # NN Structure
 
@@ -55,7 +56,7 @@ model = AUTOENCODER(Num_meas, Num_inputs, Num_x_Obsv, Num_x_Neurons, Num_u_Obsv,
 # Training Loop
 start_training_time = time.time()
 
-eps = 750       # Number of epochs per batch size
+eps = 2      # Number of epochs per batch size
 lr = 1e-3        # Learning rate
 batch_size = 256
 S_p = 30
@@ -64,7 +65,7 @@ alpha = [0.1, 10e-7, 10e-15]
 W = 0
 M = 1 # Amount of models you want to run
 
-[Lowest_loss, Lowest_test_loss, Best_Model] = trainingfcn(eps, lr, batch_size, S_p, T, alpha, Num_meas, Num_inputs, Num_x_Obsv, Num_x_Neurons, Num_u_Obsv, Num_u_Neurons, Num_hidden_x_encoder, Num_hidden_x_decoder, Num_hidden_u_encoder, Num_hidden_u_decoder, train_tensor, test_tensor, M)
+[Lowest_loss, Lowest_test_loss, Best_Model] = trainingfcn(eps, lr, batch_size, S_p, T, alpha, Num_meas, Num_inputs, Num_x_Obsv, Num_x_Neurons, Num_u_Obsv, Num_u_Neurons, Num_hidden_x_encoder, Num_hidden_x_decoder, Num_hidden_u_encoder, Num_hidden_u_decoder, train_tensor_unforced, train_tensor_forced, test_tensor, M)
 
 # Load the parameters of the best model
 model.load_state_dict(torch.load(Best_Model))
