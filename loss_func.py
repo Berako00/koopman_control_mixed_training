@@ -1,11 +1,9 @@
 import torch
 import torch.nn.functional as F
+
 def custom_loss(x_pred, x_target):
     total_custom_loss = torch.sum(torch.mean((x_pred - x_target) ** 2))
     return total_custom_loss
-
-
-
 
 def loss_encoder_decoder(xuk, encoder, decoder):
     total_g_loss = torch.tensor(0.0, device=xuk[:, 0, :].device)
@@ -67,9 +65,6 @@ def total_loss_forced(alpha, xuk, Num_meas, Num_x_Obsv, T, S_p, model):
     L_total = alpha[0]* L_gu +  alpha[1]*(L_3 + L_4)+ alpha[2]*(L_5 + L_6)
 
     return L_total
-
-
-
 
 def loss_3_uf(xuk, Num_meas, model):
     pred_3 = model.x_Decoder(model.x_Koopman_op(model.x_Encoder(xuk[:, 0, :Num_meas])))
